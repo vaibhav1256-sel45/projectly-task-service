@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package task;
+
+service TaskService {
+  rpc getTaskStatistics (TaskStatusRequest) returns (TaskStatusResponse);
+}
+
+message TaskStatusRequest {
+  string project_id = 1;
+}
+
+message StatusCount {
+  string status = 1;
+  int32 count = 2;
+}
+
+message PriorityCount {
+  string priority = 1;
+  int32 count = 2;
+}
+
+message AssigneeCount {
+  string user_id = 1;
+  int32 count = 2;
+}
+
+// Dashboard numbers for one project.
+// by_priority and by_assignee only count open tasks (To Do, In Progress, In Review).
+message TaskStatusResponse {
+  int32 total = 1;
+  repeated StatusCount by_status = 2;
+  repeated PriorityCount by_priority = 3;
+  repeated AssigneeCount by_assignee = 4;
+  int32 unassigned = 5;             // open tasks with nobody assigned
+  int32 overdue = 6;                // open tasks past their due date
+  int32 due_soon = 7;               // open tasks due within the next 7 days
+  int32 completed_last_7_days = 8;
+  double completion_rate = 9;       // completed / (all tasks except cancelled), in percent
+}

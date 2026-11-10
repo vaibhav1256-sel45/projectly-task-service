@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package project;
+
+service ProjectService {
+  rpc GetMembersId (GetMembersIdRequest) returns (GetMembersIdResponse);
+}
+
+message GetMembersIdRequest {
+  string project_id = 1;
+}
+
+message GetMembersIdResponse {
+  string owner_id = 1;
+  repeated string member_ids = 2;
+  map<string, string> member_roles = 3; // user id -> role
+}
